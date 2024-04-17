@@ -12,6 +12,7 @@ import com.sheraz.loadimagesapp.cache.LocalCacheStorage
 import com.sheraz.loadimagesapp.databinding.ActivityMainBinding
 import com.sheraz.loadimagesapp.model.GetUnSplashApiResponse
 import com.sheraz.loadimagesapp.remote.ServiceAPI
+import com.sheraz.loadimagesapp.utils.hideKeyboard
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnGet.setOnClickListener {
 
+            hideKeyboard()
             if (binding.txtImagesCount.text.isNotEmpty()){
 
                 try {
