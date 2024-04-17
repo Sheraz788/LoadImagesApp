@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.gson.Gson
 import com.sheraz.loadimagesapp.adapter.DisplayImagesAdapter
@@ -25,18 +26,26 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        fetchImagesData()
+        binding.btnGet.setOnClickListener {
+
+            if (binding.txtImagesCount.text.isNotEmpty()){
+                fetchImagesData(binding.txtImagesCount.text.toString().toInt())
+            }else{
+                Toast.makeText(this, "Number of images cannot be empty", Toast.LENGTH_LONG).show()
+            }
+
+        }
     }
 
 
-    private fun fetchImagesData() {
+    private fun fetchImagesData(imagesCount : Int) {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.unsplash.com/") //
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val apiService = retrofit.create(ServiceAPI::class.java)
-        val call = apiService.getAllPhotosData("iAMHZ0C4HE45oQ6BuP95RyPaHjVJ4bo01hvvpwzA9s0", 50)
+        val call = apiService.getAllPhotosData("iAMHZ0C4HE45oQ6BuP95RyPaHjVJ4bo01hvvpwzA9s0", imagesCount)
         binding.progressBar.visibility = View.VISIBLE
 
 
