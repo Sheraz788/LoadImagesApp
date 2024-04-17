@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.gson.Gson
 import com.sheraz.loadimagesapp.adapter.DisplayImagesAdapter
+import com.sheraz.loadimagesapp.cache.LocalCacheStorage
 import com.sheraz.loadimagesapp.databinding.ActivityMainBinding
 import com.sheraz.loadimagesapp.model.GetUnSplashApiResponse
 import com.sheraz.loadimagesapp.remote.ServiceAPI
@@ -29,7 +30,23 @@ class MainActivity : AppCompatActivity() {
         binding.btnGet.setOnClickListener {
 
             if (binding.txtImagesCount.text.isNotEmpty()){
-                fetchImagesData(binding.txtImagesCount.text.toString().toInt())
+
+                try {
+                    val savedDataSize = LocalCacheStorage.getImagesDataSize(this@MainActivity)
+                    if (savedDataSize == binding.txtImagesCount.text.toString().toInt()) {
+
+                        initImagesDisplayAdapter(
+                            LocalCacheStorage.getImagesData(this@MainActivity) ?: ArrayList()
+                        )
+                    } else {
+
+                        fetchImagesData(binding.txtImagesCount.text.toString().toInt())
+
+                    }
+                }catch (e  : Exception){
+                    Toast.makeText(this, "Fetching Failed Wrong Input", Toast.LENGTH_LONG).show()
+                }
+
             }else{
                 Toast.makeText(this, "Number of images cannot be empty", Toast.LENGTH_LONG).show()
             }
@@ -59,11 +76,15 @@ class MainActivity : AppCompatActivity() {
                     // Process the data here
                     initImagesDisplayAdapter(data ?: ArrayList())
 
+                    //save fetched data locally
+                    LocalCacheStorage.saveImagesData(this@MainActivity, LocalCacheStorage.ImagesData, Gson().toJson(data))
+
                 } else {
 
                     // Handle error
                     Log.e("ApiCallReceiver", "API call failed: ${response.code()}")
 
+                    Toast.makeText(this@MainActivity, "Images Fetching Response Error", Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -71,7 +92,7 @@ class MainActivity : AppCompatActivity() {
 
                 //Handle failure
                 binding.progressBar.visibility = View.GONE
-                Log.e("ApiCallReceiver", "API call failed: ${t.message}")
+                Toast.makeText(this@MainActivity, "Images Fetching Failed", Toast.LENGTH_LONG).show()
 
             }
         })
@@ -80,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 
     fun initImagesDisplayAdapter(imageDataList : ArrayList<GetUnSplashApiResponse>){
 
-        val adapter = DisplayImagesAdapter(imageDataList)
+        val adapter = DisplayImagesAdapter(this, imageDataList)
         binding.displayImagesList.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         binding.displayImagesList.adapter = adapter
     }

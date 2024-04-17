@@ -3,8 +3,10 @@ package com.sheraz.loadimagesapp.adapter
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.sheraz.loadimagesapp.MainActivity
 import com.sheraz.loadimagesapp.databinding.DisplayImagesAdapterLayoutItemBinding
 import com.sheraz.loadimagesapp.model.GetUnSplashApiResponse
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +17,7 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
-class DisplayImagesAdapter(var imageDataList : ArrayList<GetUnSplashApiResponse>) : RecyclerView.Adapter<DisplayImagesAdapter.DisplayImagesViewHolder>() {
+class DisplayImagesAdapter(var context : MainActivity, var imageDataList : ArrayList<GetUnSplashApiResponse>) : RecyclerView.Adapter<DisplayImagesAdapter.DisplayImagesViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -31,7 +33,7 @@ class DisplayImagesAdapter(var imageDataList : ArrayList<GetUnSplashApiResponse>
         position: Int
     ) {
         val imageData = imageDataList[position]
-        holder.onBind(imageData)
+        holder.onBind(imageData, context)
 
     }
 
@@ -43,20 +45,21 @@ class DisplayImagesAdapter(var imageDataList : ArrayList<GetUnSplashApiResponse>
 
     inner class DisplayImagesViewHolder(var binding : DisplayImagesAdapterLayoutItemBinding) : RecyclerView.ViewHolder(binding.root){
 
-        fun onBind(imageData : GetUnSplashApiResponse){
+        fun onBind(imageData : GetUnSplashApiResponse, context: MainActivity){
 
             GlobalScope.launch(Dispatchers.Main) {
+                binding.progressBar.visibility = View.VISIBLE
               withContext(Dispatchers.IO) {
+
                    val bitmap = downloadBitmapFromUrl(imageData.urls?.thumb ?: "")
 
                   withContext(Dispatchers.Main){
+                      binding.progressBar.visibility = View.GONE
                       binding.displayImg.setImageBitmap(bitmap)
                   }
                 }
 
             }
-
-
         }
     }
 
@@ -72,6 +75,7 @@ class DisplayImagesAdapter(var imageDataList : ArrayList<GetUnSplashApiResponse>
             bitmap = BitmapFactory.decodeStream(input)
         } catch (e: Exception) {
             e.printStackTrace()
+
         }
         return bitmap
     }
