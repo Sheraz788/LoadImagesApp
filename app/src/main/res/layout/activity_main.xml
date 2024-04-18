@@ -39,15 +39,40 @@
         app:layout_constraintTop_toTopOf="@id/txtImagesCount" />
 
 
+
+    <Button
+        android:id="@+id/totalImages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:text="@string/total_images"
+        android:layout_margin="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtImagesCount" />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/displayImagesList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"
+        app:layout_constraintBottom_toTopOf="@id/progressBarPagination"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/totalImages" />
+
+    <ProgressBar
+        android:id="@+id/progressBarPagination"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:visibility="gone"
+        android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtImagesCount" />
+        app:layout_constraintTop_toBottomOf="@id/displayImagesList" />
+
 
     <ProgressBar
         android:id="@+id/progressBar"

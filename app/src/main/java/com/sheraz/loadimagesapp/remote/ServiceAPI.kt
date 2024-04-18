@@ -8,6 +8,6 @@ import retrofit2.http.Query
 interface ServiceAPI {
 
     @GET("photos")
-    fun getAllPhotosData(@Query("client_id") clientId : String, @Query("per_page") perPage : Int) : Call<ArrayList<GetUnSplashApiResponse>>
+    fun getAllPhotosData(@Query("client_id") clientId : String, @Query("per_page") perPage : Int, @Query("page") page : Int) : Call<ArrayList<GetUnSplashApiResponse>>
 
 }

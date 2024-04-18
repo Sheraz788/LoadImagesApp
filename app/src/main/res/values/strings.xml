@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">LoadImagesApp</string>
+    <string name="total_images">Total Images</string>
+    <string name="end_of_page_no_more_images">End Of Page No More Images</string>
+    <string name="images_fetching_response_error">Images Fetching Response Error</string>
+    <string name="images_fetching_failed">Images Fetching Failed</string>
+    <string name="number_of_images_cannot_be_empty">Number of images cannot be empty</string>
+    <string name="fetching_failed_wrong_input">Fetching Failed Wrong Input</string>
 </resources>
