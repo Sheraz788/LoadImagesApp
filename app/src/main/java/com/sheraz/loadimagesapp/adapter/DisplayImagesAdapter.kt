@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sheraz.loadimagesapp.MainActivity
+import com.sheraz.loadimagesapp.R
 import com.sheraz.loadimagesapp.databinding.DisplayImagesAdapterLayoutItemBinding
 import com.sheraz.loadimagesapp.model.GetUnSplashApiResponse
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +33,21 @@ class DisplayImagesAdapter(var context : MainActivity, var imageDataList : Array
         holder: DisplayImagesAdapter.DisplayImagesViewHolder,
         position: Int
     ) {
+
         val imageData = imageDataList[position]
+        if (position == 0){
+            imageData.urls?.thumb = ""
+        }else if (position == 4){
+            imageData.urls?.thumb = ""
+        }else if (position == 8){
+            imageData.urls?.thumb = ""
+        }else if (position == 15){
+            imageData.urls?.thumb = ""
+        }else if (position == 20){
+            imageData.urls?.thumb = ""
+        }else if (position == 25){
+            imageData.urls?.thumb = ""
+        }
         holder.onBind(imageData, context)
 
     }
@@ -55,7 +70,11 @@ class DisplayImagesAdapter(var context : MainActivity, var imageDataList : Array
 
                   withContext(Dispatchers.Main){
                       binding.progressBar.visibility = View.GONE
-                      binding.displayImg.setImageBitmap(bitmap)
+                      if (bitmap != null){
+                          binding.displayImg.setImageBitmap(bitmap)
+                      }else{
+                          binding.displayImg.setImageResource(R.drawable.dummy_image)
+                      }
                   }
                 }
 
@@ -73,11 +92,15 @@ class DisplayImagesAdapter(var context : MainActivity, var imageDataList : Array
             connection.connect()
             val input: InputStream = connection.inputStream
             bitmap = BitmapFactory.decodeStream(input)
+
+            return bitmap
+
         } catch (e: Exception) {
             e.printStackTrace()
 
+            return null
+
         }
-        return bitmap
     }
 
 
