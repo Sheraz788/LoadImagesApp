@@ -35,19 +35,7 @@ class DisplayImagesAdapter(var context : MainActivity, var imageDataList : Array
     ) {
 
         val imageData = imageDataList[position]
-        if (position == 0){
-            imageData.urls?.thumb = ""
-        }else if (position == 4){
-            imageData.urls?.thumb = ""
-        }else if (position == 8){
-            imageData.urls?.thumb = ""
-        }else if (position == 15){
-            imageData.urls?.thumb = ""
-        }else if (position == 20){
-            imageData.urls?.thumb = ""
-        }else if (position == 25){
-            imageData.urls?.thumb = ""
-        }
+        
         holder.onBind(imageData, context)
 
     }
